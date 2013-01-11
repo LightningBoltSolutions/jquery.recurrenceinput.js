@@ -482,7 +482,7 @@
                                     '${i18n.rangeByEndDate}',
                                 '</label>',
                                 '<input',
-                                    'type="date"',
+                                    'type="text"',
                                     'name="rirangebyenddatecalendar" />',
                             '</div>',
                         '</div>',
@@ -698,14 +698,14 @@
                     break;
                 case 'BYENDDATE':
                     field = form.find('input[name=rirangebyenddatecalendar]');
-                    date = field.data('dateinput').getValue('yyyymmdd');
+                    date = $.datepicker.formatDate('yymmdd', new Date(field.val()));
                     result += ';UNTIL=' + date + 'T000000';
                     if (tz === true) {
                         // Make it UTC:
                         result += 'Z';
                     }
                     human += ', ' + conf.i18n.rangeByEndDateHuman;
-                    human += ' ' + field.data('dateinput').getValue(conf.i18n.longDateFormat);
+                    human += ' ' + field.val();
                     break;
                 }
                 break;
@@ -1057,7 +1057,7 @@
                         month = until.slice(4, 6);
                         month = parseInt(month, 10) - 1;
                         day = until.slice(6, 8);
-                        input.data('dateinput').setValue(year, month, day);
+                        input.val($.datepicker.formatDate('mm/dd/yy', new Date(year, month, day)));
                     }
 
                     selectors = field.find('input[name=rirangetype]');
@@ -1575,14 +1575,8 @@
             shortDays:   LABELS[conf.lang].shortWeekdays.join()
         });
 
-        // Make the date input into a calendar dateinput()
-        form.find('input[name=rirangebyenddatecalendar]').dateinput({
-            selectors: true,
-            lang: conf.lang,
-            format: conf.i18n.shortDateFormat,
-            firstDay: conf.firstDay,
-            yearRange: [-5, 10]
-        }).data('dateinput').setValue(new Date());
+        // Make the date input into a calendar jquery ui datepicker
+        form.find('input[name=rirangebyenddatecalendar]').datepicker();
 
         if (textarea.val()) {
             var result = widgetLoadFromRfc5545(form, conf, textarea.val(), false);
