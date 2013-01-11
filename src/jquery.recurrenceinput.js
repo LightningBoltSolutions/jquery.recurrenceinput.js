@@ -1602,6 +1602,13 @@
                 loadData(textarea.val());
                 e.preventDefault();
                 form.overlay().load();
+                offset = $(this).parent().parent().parent().offset();
+                offsetx = offset.left;
+                offsety = offset.top - $('.riform').outerHeight(true) - $(this).parent().parent().parent().height();
+                $('.riform').css({
+                    top: offsety,
+                	left: offsetx
+                });
             }
         );
 
